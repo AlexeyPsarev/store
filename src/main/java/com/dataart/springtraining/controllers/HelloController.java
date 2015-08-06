@@ -8,12 +8,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.Date;
 
 public class HelloController implements Controller
 {
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
 	{
-        return new ModelAndView("hello.jsp");
+		String now = (new Date()).toString();
+        return new ModelAndView("hello", "now", now);
     }
 }

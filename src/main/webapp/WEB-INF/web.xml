@@ -5,11 +5,6 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
          http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" >
-
-    <!-- Создаёт контейнер Spring, разделяемый всеми сервлетами и фильтрами >
-    <listener>
-        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-    </listener-->
     
   <servlet>
     <servlet-name>springapp</servlet-name>
@@ -24,11 +19,6 @@
     <servlet-name>springapp</servlet-name>
     <url-pattern>*.htm</url-pattern>
   </servlet-mapping>
-
-  <!--context-param>
-      <param-name>contextConfigLocation</param-name>
-      <param-value>WEB-INF/springapp-servlet.xml</param-value>
-  </context-param-->
 
   <welcome-file-list>
     <welcome-file>
