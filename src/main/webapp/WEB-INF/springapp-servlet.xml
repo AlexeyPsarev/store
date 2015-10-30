@@ -7,10 +7,10 @@
 
   <!-- the application context definition for the springapp DispatcherServlet -->
 
-  <bean name="/hello.htm" class="com.dataart.springtraining.controllers.HelloController"/>
+  <bean name="/login.htm" class="com.dataart.springtraining.controllers.LoginController"/>
 
   <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-      <!--property name="viewClass" value="org.springframework.web.servlet.view.JstlView"></property-->
+      <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"></property>
       <property name="prefix" value="/WEB-INF/views/"></property>
       <property name="suffix" value=".jsp"></property>        
   </bean>
