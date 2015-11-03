@@ -5,7 +5,7 @@ DROP TABLE applications IF EXISTS;
 CREATE TABLE users (
   id INTEGER PRIMARY KEY AUTO_INCREMENT,
   username VARCHAR(40) NOT NULL,
-  pass CHAR(40) NOT NULL,
+  password CHAR(40) NOT NULL,
   salt CHAR(32) NOT NULL,
   full_name VARCHAR(60) NOT NULL
 );

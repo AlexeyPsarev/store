@@ -17,25 +17,25 @@
     </head>
     <body>
         <button class="btn btn-link">Back</button><br>
-        <form class="form-inline">
+        <form class="form-inline" action="register.htm" method="POST">
             <div class="row">
                 <label class="col-md-2 text-right" style="line-height: 50px">Username</label>
                 <div class="col-md-2 text-left" style="line-height: 50px">
-                    <input class="form-control" type="text" style="width: 100%" autocomplete="off">
+                    <input class="form-control" type="text" name="username" style="width: 100%" autocomplete="off">
                 </div>
                 <div class="col-md-2 alert alert-danger">Alert</div>
             </div>
             <div class="row">
                 <label class="col-md-2 text-right" style="line-height: 50px">Full name</label>
                 <div class="col-md-2 text-left" style="line-height: 50px">
-                    <input class="form-control" type="text" style="width: 100%" autocomplete="off">
+                    <input class="form-control" type="text" name="fullname" style="width: 100%" autocomplete="off">
                 </div>
                 <div class="col-md-2 alert alert-danger">Alert</div>
             </div>
             <div class="row">
                 <label class="col-md-2 text-right" style="line-height: 50px">Password</label>
                 <div class="col-md-2 text-left" style="line-height: 50px">
-                    <input class="form-control" type="password" style="width: 100%">
+                    <input class="form-control" type="password" name="password" style="width: 100%">
                 </div>
                 <div class="col-md-2 alert alert-danger">Alert</div>
             </div>
