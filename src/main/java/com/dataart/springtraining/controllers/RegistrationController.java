@@ -13,7 +13,7 @@ import org.springframework.web.servlet.mvc.Controller;
 @Service
 public class RegistrationController implements Controller
 {
-	@Resource
+	@Autowired
 	private UserRepository dao;
 	
 	@Override
@@ -24,7 +24,7 @@ public class RegistrationController implements Controller
 			request.getParameter("password"),
 			"salt",
 			request.getParameter("fullname"));
-		dao.saveUser(user);
+		dao.save(user);
 		return null;
 	}
 }
