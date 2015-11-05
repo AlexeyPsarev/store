@@ -5,23 +5,20 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "users")
 public class User
 {
-
 	public User() 
 	{
 	}
 
-	public User(String username, String password, String salt, String fullname)
+	public User(String username, String password, String fullname)
 	{
 		this.username = username;
 		this.password = password;
-		this.salt = salt;
 		this.fullname = fullname;
 	}
 	
@@ -38,11 +35,6 @@ public class User
 	public String getPassword()
 	{
 		return password;
-	}
-	
-	public String getSalt()
-	{
-		return salt;
 	}
 	
 	public String getFullname()
@@ -65,11 +57,6 @@ public class User
 		password = value;
 	}
 	
-	public void setSalt(String value)
-	{
-		salt = value;
-	}
-	
 	public void setFullname(String value)
 	{
 		fullname = value;
@@ -85,9 +72,6 @@ public class User
 	
 	@Column(name = "password")
 	private String password;
-	
-	@Column(name = "salt")
-	private String salt;
 	
 	@Column(name = "full_name")
 	private String fullname;

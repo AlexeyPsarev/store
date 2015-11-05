@@ -25,10 +25,10 @@
             <div class="col-lg-5"></div>
             <div class="col-lg-2" style="display: table">
                 <div style="display: table-cell; vertical-align: middle">
-                <form>
+                <form action="login.jsp" method="GET">
                     <input type="submit" class="btn btn-primary btn-block" style="margin-top: 20px" value="Sign in">
                 </form>
-                <form>
+                <form action="registration.jsp" method="GET">
                     <input type="submit" class="btn btn-primary btn-block" style="margin-top: 10px" value="Register">
                 </form>
                 </div>
