@@ -12,6 +12,10 @@
  
   <!--bean name="/login.htm" class="com.dataart.springtraining.controllers.LoginController"/>
   <bean name="/register.htm" class="com.dataart.springtraining.controllers.RegistrationController"/-->
+  
+  <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+      <property name="maxUploadSize" value="20000000" />
+  </bean>
 
   <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
       <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"></property>

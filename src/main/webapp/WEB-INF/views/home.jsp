@@ -31,7 +31,10 @@
                     <li role="presentation"><a href="#">Multimedia</a></li>
                 </ul>
                 <hr>
-                <button class="btn btn-primary">Upload</button>
+                <form action="upload.htm" method="GET">
+                    <button class="btn btn-primary">Upload</button>
+                    <input type="hidden" name="userId" value="${userId}">
+                </form>
             </div>
             <div class="col-md-9" style="border-left: 2px solid; min-height: 650px">
                 <div style="min-height: 650px">

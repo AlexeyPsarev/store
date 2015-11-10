@@ -3,6 +3,8 @@ package com.dataart.springtraining.controllers;
 import com.dataart.springtraining.domain.User;
 import com.dataart.springtraining.service.UserService;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.Resource;
@@ -78,8 +80,9 @@ public class RegistrationController implements Controller
 		if (service.canCreate(user))
 		{
 			service.create(user);
-			// ToDo: send user to view
-			return new ModelAndView("home");
+			Map<String, Object> model = new HashMap<>();
+			model.put("userId", user.getId());
+			return new ModelAndView("home", model);
 		}
 		else
 		{

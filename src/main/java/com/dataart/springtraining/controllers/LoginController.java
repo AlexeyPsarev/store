@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,8 +32,9 @@ public class LoginController implements Controller
 		if (service.authenticate(username, request.getParameter("password")))
 		{
 			User user = service.find(username);
-			// ToDo: send user to view
-			return new ModelAndView("home");
+			Map<String, Object> model = new HashMap<>();
+			model.put("userId", user.getId());
+			return new ModelAndView("home", model);
 		}
 		else
 		{
@@ -39,9 +42,5 @@ public class LoginController implements Controller
 			request.getRequestDispatcher("login.jsp").forward(request, response);
 			return null;
 		}
-				
-		//Map<String, Object> model = new HashMap<>();
-		//model.put("key", value);
-		//return new ModelAndView(/*"view", model*/);
     }
 }

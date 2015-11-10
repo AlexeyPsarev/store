@@ -1,5 +1,5 @@
 DROP TABLE users IF EXISTS;
-DROP TABLE categories IF EXISTS;
+-- DROP TABLE categories IF EXISTS;
 DROP TABLE applications IF EXISTS;
 
 CREATE TABLE users (
@@ -9,10 +9,10 @@ CREATE TABLE users (
   full_name VARCHAR(60) NOT NULL
 );
 
-CREATE TABLE categories (
-  id INTEGER PRIMARY KEY AUTO_INCREMENT,
-  name VARCHAR(20) NOT NULL
-);
+-- CREATE TABLE categories (
+--   id INTEGER PRIMARY KEY AUTO_INCREMENT,
+--   name VARCHAR(20) NOT NULL
+-- );
 
 CREATE TABLE applications (
   id INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -20,7 +20,7 @@ CREATE TABLE applications (
   pkg_name VARCHAR UNIQUE NOT NULL,
   picture_128 BLOB,
   picture_512 BLOB,
-  category INTEGER REFERENCES categories ON UPDATE CASCADE ON DELETE CASCADE,
+  category VARCHAR(20), -- INTEGER REFERENCES categories ON UPDATE CASCADE ON DELETE CASCADE,
   downloads INTEGER NOT NULL,
   time_uploaded TIMESTAMP,
   description VARCHAR,
