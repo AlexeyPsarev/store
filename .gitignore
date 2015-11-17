@@ -1,0 +1,6 @@
+package/
+target/
+nb-configuration.xml
+src/main/webapp/js/bootstrap-3.3.5-dist/**
+!src/main/webapp/js/bootstrap-3.3.5-dist/css/bootstrap.min.css
+!src/main/webapp/js/bootstrap-3.3.5-dist/js/bootstrap.min.js

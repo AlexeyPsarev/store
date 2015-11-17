@@ -22,7 +22,7 @@
         <title>Registration</title>
     </head>
     <body>
-        <button class="btn btn-link">Back</button><br>
+        <a href="index.jsp" class="btn btn-link">Back</a><br>
         <p>
             Username must contain alphanumeric characters, underscore and dot.
             Numbers, underscore and dot can't be at the end or start of a username.

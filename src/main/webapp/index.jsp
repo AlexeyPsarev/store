@@ -1,4 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 
 <html>
@@ -22,10 +23,10 @@
             <div class="col-lg-5"></div>
             <div class="col-lg-2" style="display: table">
                 <div style="display: table-cell; vertical-align: middle">
-                <form action="login.jsp" method="GET">
+                <form action="loginForm.htm" method="GET">
                     <input type="submit" class="btn btn-primary btn-block" value="Sign in">
                 </form>
-                <form action="registration.jsp" method="GET">
+                <form action="registrationForm.htm" method="GET">
                     <input type="submit" class="btn btn-primary btn-block" style="margin-top: 10px" value="Register">
                 </form>
                 </div>

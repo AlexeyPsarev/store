@@ -47,6 +47,10 @@
                     <select class="form-control" name="category" style="width: 100%">
                         <option value="Games">Games</option>
                         <option value="Multimedia">Multimedia</option>
+                        <option value="Productivity">Productivity</option>
+                        <option value="Tools">Tools</option>
+                        <option value="Health">Health</option>
+                        <option value="Lifestyle">Lifestyle</option>
                     </select>
                 </div>
             </div>

@@ -17,7 +17,7 @@
         <title>Login page</title>
     </head>
     <body>
-        <button class="btn btn-link">Back</button><br>
+        <a href="index.jsp" class="btn btn-link">Back</a><br>
         <div class="row">
             <c:if test="${not empty errMsg}">
                 <div class="col-md-4 alert alert-danger text-center">${errMsg}</div>

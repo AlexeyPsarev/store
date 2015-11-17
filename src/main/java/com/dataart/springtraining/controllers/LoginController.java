@@ -17,30 +17,32 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @org.springframework.stereotype.Controller
-public class LoginController implements Controller
+public class LoginController
 {
 	@Resource
 	private UserService service;
 	
 	private static final String AUTH_FAILED = "Incorrect username or password. Please, try again";
 	
-	@Override
+	@RequestMapping(value = "loginForm.htm", method = RequestMethod.GET)
+	public ModelAndView showLoginForm(HttpServletRequest request, HttpServletResponse response)
+	{
+		return new ModelAndView("login");
+	}
+	
 	@RequestMapping(value = "login.htm", method = RequestMethod.POST)
-    public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public ModelAndView performLogin(HttpServletRequest request, HttpServletResponse response)
 	{
 		String username = request.getParameter("username");
 		if (service.authenticate(username, request.getParameter("password")))
 		{
 			User user = service.find(username);
-			Map<String, Object> model = new HashMap<>();
-			model.put("userId", user.getId());
-			return new ModelAndView("home", model);
+			request.getSession(true).setAttribute("userId", user.getId());
+			return new ModelAndView("redirect:/home.htm");
 		}
 		else
 		{
-			request.setAttribute("errMsg", AUTH_FAILED);
-			request.getRequestDispatcher("login.jsp").forward(request, response);
-			return null;
+			return new ModelAndView("login", "errMsg", AUTH_FAILED);
 		}
     }
 }

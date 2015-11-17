@@ -22,9 +22,8 @@
                 <div class="alert alert-success text-center">
                     Package uploading successfully completed
                 </div>
-                <form action="uploadDone.htm" method="GET">
+                <form action="home.htm" method="GET">
                     <button class="btn btn-primary" style="width: 30%">OK</button>
-                    <input type="hidden" name="userId" value="${userId}">
                 </form>
             </div>
             <div class="col-md-4"></div>

@@ -35,4 +35,9 @@ public class UserService
 	{
 		return dao.findByUsername(username);
 	}
+	
+	public User find(Integer id)
+	{
+		return dao.findOne(id);
+	}
 }

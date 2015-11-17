@@ -1,4 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!--%@page session="true"%-->
 <!DOCTYPE html>
 
 <html>
@@ -6,11 +8,30 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="js/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
         <link href="js/bootstrap-3.3.5-dist/css/bootstrap.min.css" rel="stylesheet">
-        <title></title>
+        <title>Store</title>
+        
+        <c:choose>
+            <c:when test="${empty category}">
+                <c:set var="category" value="Games"/>
+            </c:when>
+            <c:when test="${empty page}">
+                <c:set var="page" value="1"/>
+            </c:when>
+        </c:choose>
+        
+        <script charset="utf-8">
+            var category = '${category}',
+                    page = ${page};
+        </script>
+        <script src="${pageContext.request.contextPath}/js/HomePageActions.js"></script>
+        
         <style>
             .row {
                 margin-left: 0px;
                 margin-right: 0px;
+            }
+            button {
+                margin-top: 5px;
             }
         </style>
     </head>
@@ -18,37 +39,44 @@
         <!-- common -->
         <div>
             <p>Most popular</p>
-            <img src="http://tomcat.apache.org/tomcat-8.0-doc/images/tomcat.png" height="128" width="128" style="margin-left: 10px">
-            <img src="http://tomcat.apache.org/tomcat-8.0-doc/images/tomcat.png" height="128" width="128" style="margin-left: 10px">
-            <img src="http://tomcat.apache.org/tomcat-8.0-doc/images/tomcat.png" height="128" width="128" style="margin-left: 10px">
-            <img src="http://tomcat.apache.org/tomcat-8.0-doc/images/tomcat.png" height="128" width="128" style="margin-left: 10px">
-            <img src="http://tomcat.apache.org/tomcat-8.0-doc/images/tomcat.png" height="128" width="128" style="margin-left: 10px">
+            <div style="min-height: 128px">
+                <c:forEach var="item" items="${popularApps}">
+                    <img src="${item.pic128}" height="128" width="128" style="margin-left: 10px">
+                </c:forEach>
+            </div>
         </div>
         <div class="row" style="margin-top: 20px;">
             <div class="col-md-3 text-center">
                 <ul class="nav nav-pills nav-stacked">
-                    <li role="presentation" class="active"><a href="#">Games</a></li>
-                    <li role="presentation"><a href="#">Multimedia</a></li>
+                    <li><a href="${pageContext.request.contextPath}/home.htm?category=Games&page=1" id="Games">Games</a></li>
+                    <li><a href="${pageContext.request.contextPath}/home.htm?category=Multimedia&page=1" id="Multimedia">Multimedia</a></li>
+                    <li><a href="${pageContext.request.contextPath}/home.htm?category=Productivity&page=1" id="Productivity">Productivity</a></li>
+                    <li><a href="${pageContext.request.contextPath}/home.htm?category=Tools&page=1" id="Tools">Tools</a></li>
+                    <li><a href="${pageContext.request.contextPath}/home.htm?category=Health&page=1" id="Health">Health</a></li>
+                    <li><a href="${pageContext.request.contextPath}/home.htm?category=Lifestyle&page=1" id="Lifestyle">Lifestyle</a></li>
                 </ul>
                 <hr>
                 <form action="upload.htm" method="GET">
                     <button class="btn btn-primary">Upload</button>
                     <input type="hidden" name="userId" value="${userId}">
                 </form>
+                <form action="" method="GET">
+                    <button class="btn btn-primary">Log out</button>
+                </form>
             </div>
             <div class="col-md-9" style="border-left: 2px solid; min-height: 650px">
-                <div style="min-height: 650px">
-                    <img src="http://tomcat.apache.org/tomcat-8.0-doc/images/tomcat.png" height="128" width="128">
-                    <a href="" style="line-height: 128px; margin-left: 50px">Title1</a>
-                    <hr>
-                </div>
+                <c:forEach var="item" items="${apps}">
+                    <div style="min-height: 650px">
+                        <a href="details.htm?app=${item.id}"><img src="${item.pic128}" height="128" width="128"></a>
+                        <a href="details.htm?app=${item.id}" style="line-height: 128px; margin-left: 50px">${item.appName}</a>
+                        <hr>
+                    </div>
+                </c:forEach>
                 <nav>
                     <ul class="pagination">
-                        <li class="active"><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#">5</a></li>
+                        <c:forEach var="cur" begin="1" end="${pageCount}">
+                            <li><a href="${pageContext.request.contextPath}/home.htm?category=${category}&page=${cur}" id="p${cur}">${cur}</a></li>
+                        </c:forEach>
                     </ul>
                 </nav>
             </div>

@@ -35,12 +35,12 @@ public class ApplicationPkg
 		this.pkgName = name;
 	}
 	
-	public void setPic128(Blob pic)
+	public void setPic128(String pic)
 	{
 		this.pic128 = pic;
 	}
 	
-	public void setPic512(Blob pic)
+	public void setPic512(String pic)
 	{
 		this.pic512 = pic;
 	}
@@ -85,12 +85,12 @@ public class ApplicationPkg
 		return pkgName;
 	}
 	
-	public Blob getPic128()
+	public String getPic128()
 	{
 		return pic128;
 	}
 	
-	public Blob getPic512()
+	public String getPic512()
 	{
 		return pic512;
 	}
@@ -132,10 +132,10 @@ public class ApplicationPkg
 	private String pkgName;
 	
 	@Column(name = "picture_128")
-	private Blob pic128;
+	private String pic128;
 	
 	@Column(name = "picture_512")
-	private Blob pic512;
+	private String pic512;
 	
 	@Column(name = "category")
 	private String category;

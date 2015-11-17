@@ -19,7 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 
 @org.springframework.stereotype.Controller
-public class RegistrationController implements Controller
+public class RegistrationController
 {
 	@Resource
 	private UserService service;
@@ -35,60 +35,50 @@ public class RegistrationController implements Controller
 	private static final String CONFIRMATION_ERROR = "Password doesn't match the confirmation. Please, try again";
 	private static final String CANNOT_CREATE = "User with such name already exists";
 	
-	@Override
+	@RequestMapping(value = "registrationForm.htm", method = RequestMethod.GET)
+	public ModelAndView showRegistrationForm(HttpServletRequest request, HttpServletResponse response)
+	{
+		return new ModelAndView("registration");
+	}
+	
 	@RequestMapping(value = "register.htm", method = RequestMethod.POST)
-	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException 
+	public ModelAndView performRegistration(HttpServletRequest request, HttpServletResponse response)
 	{
 		String username = request.getParameter("username");
 		String fullname = request.getParameter("fullname");
 		String password = request.getParameter("password");
 		String confirmation = request.getParameter("confirmation");
-		boolean failed = false;
+		Map<String, Object> model = new HashMap<>();
 		Matcher m;
 		m = USERNAME_PATTERN.matcher(username);
 		if (!m.matches())
-		{
-			request.setAttribute("badUsername", BAD_USERNAME);
-			failed = true;
-		}
+			model.put("badUsername", BAD_USERNAME);
 		m = FULLNAME_PATTERN.matcher(fullname);
 		if (!m.matches())
-		{
-			request.setAttribute("badFullname", BAD_FULLNAME);
-			failed = true;
-		}
+			model.put("badFullname", BAD_FULLNAME);
 		m = PASSWORD_PATTERN.matcher(request.getParameter("password"));
 		if (!m.matches())
-		{
-			request.setAttribute("badPassword", BAD_PASSWORD);
-			failed = true;
-		}
+			model.put("badPassword", BAD_PASSWORD);
 		if (!password.equals(confirmation))
+			model.put("confirmErr", CONFIRMATION_ERROR);
+		if (!model.isEmpty())
 		{
-			request.setAttribute("confirmErr", CONFIRMATION_ERROR);
-			failed = true;
-		}
-		if (failed)
-		{
-			request.setAttribute("username", username);
-			request.setAttribute("fullname", fullname);
-			request.getRequestDispatcher("registration.jsp").forward(request, response);
-			return null;
+			model.put("username", username);
+			model.put("fullname", fullname);
+			return new ModelAndView("registration", model);
 		}
 
 		User user = new User(request.getParameter("username"), ENCODER.encode(password), request.getParameter("fullname"));
 		if (service.canCreate(user))
 		{
 			service.create(user);
-			Map<String, Object> model = new HashMap<>();
-			model.put("userId", user.getId());
-			return new ModelAndView("home", model);
+			request.getSession(true).setAttribute("userId", user.getId());
+			return new ModelAndView("redirect:/home.htm");
 		}
 		else
 		{
-			request.setAttribute("cannotCreate", CANNOT_CREATE);
-			request.getRequestDispatcher("registration.jsp").forward(request, response);
-			return null;
+			model.put("cannotCreate", CANNOT_CREATE);
+			return new ModelAndView("registration", model);
 		}
 	}
 }
