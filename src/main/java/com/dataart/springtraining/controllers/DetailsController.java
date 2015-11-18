@@ -30,7 +30,7 @@ public class DetailsController implements Controller
 			return new ModelAndView("redirect:/");
 		response.setHeader("pragma", "no-cache");
 		response.setHeader("Cache-control", "no-cache, no-store, must-revalidate");
-		response.setHeader("Expires", "0"); 
+		response.setHeader("Expires", "0");
 		
 		Integer id = Integer.parseInt(request.getParameter("app"));
 		Map<String, Object> model = new HashMap<>();

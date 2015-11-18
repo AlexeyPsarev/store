@@ -1,9 +1,12 @@
 package com.dataart.springtraining.dao;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Properties;
@@ -11,6 +14,7 @@ import java.util.ResourceBundle;
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import org.apache.commons.io.FilenameUtils;
+import org.h2.store.fs.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,6 +34,7 @@ public class FileRepository
 	private static final boolean IS_WINDOWS = System.getProperty("os.name").startsWith("Windows");
 	private static final String DEFAULT_IMG_128 = "default128";
 	private static final String DEFAULT_IMG_512 = "default512";
+	private static final int BUFFER_SIZE = 512;
 	
 	@PostConstruct
 	public void createDir()
@@ -75,5 +80,26 @@ public class FileRepository
 	public String getDefaultPicture512Path(String pkgName)
 	{
 		return commonContextPath + DEFAULT_IMG_512;
+	}
+	
+	public int download(String pkgName, OutputStream out) throws FileNotFoundException, IOException
+	{
+		String path = realAppPath + osPkgDir + File.separator + pkgName;
+		int fileSize = 0;
+		try (InputStream in = new FileInputStream(path)) {
+			byte[] buffer = new byte[BUFFER_SIZE];
+			int len;
+			while ((len = in.read(buffer)) != -1)
+			{
+				out.write(buffer, 0, len);
+				fileSize += len;
+			}
+		}
+		return fileSize;
+	}
+	
+	public long getFileSize(String name)
+	{
+		return FileUtils.size(realAppPath + osPkgDir + File.separator + name);
 	}
 }

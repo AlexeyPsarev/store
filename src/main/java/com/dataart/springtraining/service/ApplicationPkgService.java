@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.ZoneId;
@@ -186,6 +187,22 @@ public class ApplicationPkgService
 		return Status.OK;
 	}
 	
+	public long getFileSize(ApplicationPkg pkg)
+	{
+		return fileRepository.getFileSize(pkg.getPkgName());
+	}
+	
+	public int download(ApplicationPkg pkg, OutputStream out) throws FileNotFoundException, IOException
+	{
+		// pkg = findById(id);
+		// syncronized ?
+		// ToDo: check operator++
+		pkg.setDownloads(pkg.getDownloads() + 1);
+		appRepository.save(pkg);
+		int size = fileRepository.download(pkg.getPkgName(), out);
+		return size;
+	}
+	
 	private Status processBinaryFile(ZipInputStream input, String entryName, Map<String, byte[]> entries)
 	{
 		byte[] buf = new byte[BUFFER_SIZE];
@@ -194,9 +211,7 @@ public class ApplicationPkgService
 		{
 			int len;
 			while ((len = input.read(buf)) != -1)
-			{
 				bos.write(buf, 0, len);
-			}
 		} catch (IOException e) {
 			return Status.PARSING_ERR;
 		}
