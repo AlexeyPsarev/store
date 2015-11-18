@@ -17,7 +17,9 @@
         <title>Upload</title>
     </head>
     <body>
-        <button class="btn btn-link">Home</button><br>
+        <form action="home.htm" method="GET">
+            <button class="btn btn-link">Home</button><br>
+        </form>
         <c:if test="${not empty errMsg}">
             <div class="alert alert-danger">${errMsg}</div>
         </c:if>
@@ -60,7 +62,6 @@
                     <textarea class="form-control" name="description" rows="10" style="width: 100%"></textarea>
                 </div>
             </div>
-            <input type="hidden" name="userId" value="${userId}">
             <div class="row">
                 <div class="col-md-2"></div>
                 <div class="col-md-4 text-center">

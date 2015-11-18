@@ -10,8 +10,11 @@
         <title>Details</title>
     </head>
     <body>
-        <!-- /home.htm?category=${app.category}&page=1 -->
-        <button class="btn-link">Home</button>
+        <form action="home.htm" method="GET">
+            <input type="hidden" name="category" value="${app.category}">
+            <input type="hidden" name="page" value="1">
+            <button class="btn-link">Home</button>
+        </form>
         <!-- common -->
         <div>
             <p>Most popular</p>

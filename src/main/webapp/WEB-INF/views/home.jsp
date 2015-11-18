@@ -41,7 +41,7 @@
             <p>Most popular</p>
             <div style="min-height: 128px">
                 <c:forEach var="item" items="${popularApps}">
-                    <img src="${item.pic128}" height="128" width="128" style="margin-left: 10px">
+                    <a href="${pageContext.request.contextPath}/details.htm?app=${item.id}"><img src="${item.pic128}" height="128" width="128" style="margin-left: 10px"></a>
                 </c:forEach>
             </div>
         </div>
@@ -58,20 +58,20 @@
                 <hr>
                 <form action="upload.htm" method="GET">
                     <button class="btn btn-primary">Upload</button>
-                    <input type="hidden" name="userId" value="${userId}">
                 </form>
                 <form action="" method="GET">
                     <button class="btn btn-primary">Log out</button>
                 </form>
             </div>
             <div class="col-md-9" style="border-left: 2px solid; min-height: 650px">
-                <c:forEach var="item" items="${apps}">
-                    <div style="min-height: 650px">
-                        <a href="details.htm?app=${item.id}"><img src="${item.pic128}" height="128" width="128"></a>
-                        <a href="details.htm?app=${item.id}" style="line-height: 128px; margin-left: 50px">${item.appName}</a>
+                <div style="min-height: 650px">
+                    <c:forEach var="item" items="${apps}">
+                        
+                        <a href="${pageContext.request.contextPath}/details.htm?app=${item.id}"><img src="${item.pic128}" height="128" width="128"></a>
+                        <a href="${pageContext.request.contextPath}/details.htm?app=${item.id}" style="line-height: 128px; margin-left: 50px">${item.appName}</a>
                         <hr>
-                    </div>
-                </c:forEach>
+                    </c:forEach>
+                </div>
                 <nav>
                     <ul class="pagination">
                         <c:forEach var="cur" begin="1" end="${pageCount}">

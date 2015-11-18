@@ -23,7 +23,7 @@ public class DetailsController implements Controller
 	private UserService userService;
 
 	@Override
-	@RequestMapping(value = "details.htm", method = RequestMethod.GET)
+	@RequestMapping(value = "/details.htm", method = RequestMethod.GET)
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
 	{
 		Integer id = Integer.parseInt(request.getParameter("app"));

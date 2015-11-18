@@ -22,7 +22,7 @@ public class HomeController implements Controller
 	private static final String DEFAULT_CATEGORY = "Games";
 	
 	@Override
-	@RequestMapping(value = "home.htm", method = RequestMethod.GET)
+	@RequestMapping(value = "/home.htm", method = RequestMethod.GET)
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
 	{
 		String category = request.getParameter("category");

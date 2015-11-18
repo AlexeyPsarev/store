@@ -104,15 +104,15 @@ public class ApplicationPkgService
 			try {
 				String pic128 = sbPic128.toString();
 				item.setPic128(fileRepository.saveImage(pkgName, pic128, entries.get(pic128)));
-			} catch (IOException e) {
-				item.setPic128(DEFAULT_IMG_128);
+			} catch (IOException | NullPointerException e) {
+				item.setPic128(fileRepository.getDefaultPicture128Path(pkgName));
 			}
 			
 			try {
 				String pic512 = sbPic512.toString();
 				item.setPic512(fileRepository.saveImage(pkgName, pic512, entries.get(pic512)));
-			} catch (IOException e) {
-				item.setPic512(DEFAULT_IMG_512);
+			} catch (IOException | NullPointerException e) {
+				item.setPic512(fileRepository.getDefaultPicture512Path(pkgName));
 			}
 			
 		} catch (IOException e) {
@@ -140,7 +140,8 @@ public class ApplicationPkgService
 	
 	public Long pageCount(String category)
 	{
-		return appRepository.countByCategory(category);
+		long appCount = appRepository.countByCategory(category);
+		return (appCount % PAGE_SIZE == 0) ? (appCount / PAGE_SIZE) : (appCount / PAGE_SIZE + 1);
 	}
 	
 	public ApplicationPkg findById(Integer id)
@@ -217,6 +218,6 @@ public class ApplicationPkgService
 	private static final String TIMEZONE = "GMT+3";
 	private static final int BUFFER_SIZE = 512;
 	private static final int POPULAR_APP_COUNT = 5;
-	private static final int PAGE_SIZE = 10;
+	private static final int PAGE_SIZE = 5;
 }
 
