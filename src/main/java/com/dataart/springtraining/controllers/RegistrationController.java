@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +25,9 @@ public class RegistrationController
 	@Resource
 	private UserService service;
 	
-	private static final PasswordEncoder ENCODER = new StandardPasswordEncoder();
+	@Autowired
+	private PasswordEncoder encoder;
+	
 	private static final Pattern USERNAME_PATTERN = Pattern.compile(
 		"^(?=.{4,20}$)(?![_.0-9])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$");
 	private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.{8,}$)([\\S]*)$");
@@ -68,7 +71,7 @@ public class RegistrationController
 			return new ModelAndView("registration", model);
 		}
 
-		User user = new User(request.getParameter("username"), ENCODER.encode(password), request.getParameter("fullname"));
+		User user = new User(request.getParameter("username"), encoder.encode(password), request.getParameter("fullname"));
 		if (service.canCreate(user))
 		{
 			service.create(user);

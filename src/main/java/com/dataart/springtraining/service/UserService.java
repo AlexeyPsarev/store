@@ -13,7 +13,8 @@ public class UserService
 	@Autowired
 	private UserRepository dao;
 	
-	private static final PasswordEncoder ENCODER = new StandardPasswordEncoder();
+	@Autowired
+	private PasswordEncoder encoder;
 	
 	public boolean canCreate(User user)
 	{
@@ -28,7 +29,7 @@ public class UserService
 	public boolean authenticate(String username, String rawPassword)
 	{
 		User correctUser = dao.findByUsername(username);
-		return (correctUser != null && ENCODER.matches(rawPassword, correctUser.getPassword()));
+		return (correctUser != null && encoder.matches(rawPassword, correctUser.getPassword()));
 	}
 	
 	public User find(String username)

@@ -59,7 +59,7 @@
                 <form action="upload.htm" method="GET">
                     <button class="btn btn-primary">Upload</button>
                 </form>
-                <form action="" method="GET">
+                <form action="logout.htm" method="GET">
                     <button class="btn btn-primary">Log out</button>
                 </form>
             </div>

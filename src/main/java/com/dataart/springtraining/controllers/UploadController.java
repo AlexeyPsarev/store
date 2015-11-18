@@ -25,6 +25,7 @@ import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.rowset.serial.SerialBlob;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +44,13 @@ public class UploadController
 	private ApplicationPkgService service;
 	
 	@RequestMapping(value = "upload.htm", method = RequestMethod.GET)
-	public ModelAndView getUploadPage()
+	public ModelAndView getUploadPage(HttpServletRequest request, HttpServletResponse response)
 	{
+		if (request.getSession(false).getAttribute("userId") == null)
+			return new ModelAndView("redirect:/");
+		response.setHeader("pragma", "no-cache");
+		response.setHeader("Cache-control", "no-cache, no-store, must-revalidate");
+		response.setHeader("Expires", "0"); 
 		return new ModelAndView("upload");
 	}
 	
@@ -54,9 +60,16 @@ public class UploadController
 		@RequestParam("pkg") MultipartFile pkg,
 		@RequestParam("category") String category,
 		@RequestParam("description") String description,
-		HttpSession session
+		HttpSession session,
+		HttpServletResponse response
 	) throws IOException, ServletException
 	{
+		if (session.getAttribute("userId") == null)
+			return new ModelAndView("redirect:/");
+		response.setHeader("pragma", "no-cache");
+		response.setHeader("Cache-control", "no-cache, no-store, must-revalidate");
+		response.setHeader("Expires", "0"); 
+		
 		Integer author = (Integer)session.getAttribute("userId");
 		Map<String, Object> model = new HashMap<>();
 		if (appName.isEmpty())
@@ -77,14 +90,6 @@ public class UploadController
 		
 		return new ModelAndView("uploadDone");
 	}
-
-	/*@RequestMapping(value = "uploadDone.htm", method = RequestMethod.GET)
-	public ModelAndView finishUpload(@RequestParam(value = "userId") Integer userId)
-	{
-		Map<String, Object> model = new HashMap<>();
-		model.put("userId", userId);
-		return new ModelAndView("home", model);
-	}*/
 	
 	private static final String NAME_ERR_KEY = "appNameErr";
 	private static final String FILE_ERR_KEY = "appFileErr";

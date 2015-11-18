@@ -26,6 +26,12 @@ public class DetailsController implements Controller
 	@RequestMapping(value = "/details.htm", method = RequestMethod.GET)
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
 	{
+		if (request.getSession(false).getAttribute("userId") == null)
+			return new ModelAndView("redirect:/");
+		response.setHeader("pragma", "no-cache");
+		response.setHeader("Cache-control", "no-cache, no-store, must-revalidate");
+		response.setHeader("Expires", "0"); 
+		
 		Integer id = Integer.parseInt(request.getParameter("app"));
 		Map<String, Object> model = new HashMap<>();
 		model.put("popularApps", appService.findMostPopular().iterator());

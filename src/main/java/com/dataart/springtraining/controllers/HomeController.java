@@ -7,11 +7,13 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
+import org.springframework.web.servlet.mvc.WebContentInterceptor;
 
 @org.springframework.stereotype.Controller
 public class HomeController implements Controller
@@ -25,6 +27,12 @@ public class HomeController implements Controller
 	@RequestMapping(value = "/home.htm", method = RequestMethod.GET)
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
 	{
+		if (request.getSession(false).getAttribute("userId") == null)
+			return new ModelAndView("redirect:/");
+		response.setHeader("pragma", "no-cache");
+		response.setHeader("Cache-control", "no-cache, no-store, must-revalidate");
+		response.setHeader("Expires", "0"); 
+		
 		String category = request.getParameter("category");
 		if (category == null)
 			category = DEFAULT_CATEGORY;
