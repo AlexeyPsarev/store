@@ -1,6 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!--%@page session="true"%-->
 <!DOCTYPE html>
 
 <html>
@@ -56,17 +55,25 @@
                     <li><a href="${pageContext.request.contextPath}/home.htm?category=Lifestyle&page=1" id="Lifestyle">Lifestyle</a></li>
                 </ul>
                 <hr>
-                <form action="upload.htm" method="GET">
-                    <button class="btn btn-primary">Upload</button>
-                </form>
-                <form action="logout.htm" method="GET">
-                    <button class="btn btn-primary">Log out</button>
-                </form>
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8">
+                        <form action="upload.htm" method="GET">
+                            <button class="btn btn-primary btn-block text-center">Upload</button>
+                        </form>
+                        <form action="changePassword.htm" method="GET">
+                            <button class="btn btn-primary btn-block text-center">Change Password</button>
+                        </form>
+                        <form action="logout.htm" method="GET">
+                            <button class="btn btn-primary btn-block text-center">Log out</button>
+                        </form>
+                    </div>
+                    <div class="col-md-2"></div>
+                </div>
             </div>
             <div class="col-md-9" style="border-left: 2px solid; min-height: 650px">
                 <div style="min-height: 650px">
                     <c:forEach var="item" items="${apps}">
-                        
                         <a href="${pageContext.request.contextPath}/details.htm?app=${item.id}"><img src="${item.pic128}" height="128" width="128"></a>
                         <a href="${pageContext.request.contextPath}/details.htm?app=${item.id}" style="line-height: 128px; margin-left: 50px">${item.appName}</a>
                         <hr>

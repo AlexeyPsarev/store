@@ -21,7 +21,7 @@ public class UserService
 		return (dao.findByUsername(user.getUsername()) == null);
 	}
 	
-	public void create(User user)
+	public void save(User user)
 	{
 		user = dao.save(user);
 	}

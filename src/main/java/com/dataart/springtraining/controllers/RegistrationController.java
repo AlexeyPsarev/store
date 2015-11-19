@@ -74,7 +74,7 @@ public class RegistrationController
 		User user = new User(request.getParameter("username"), encoder.encode(password), request.getParameter("fullname"));
 		if (service.canCreate(user))
 		{
-			service.create(user);
+			service.save(user);
 			request.getSession(true).setAttribute("userId", user.getId());
 			return new ModelAndView("redirect:/home.htm");
 		}
