@@ -106,14 +106,14 @@ public class ApplicationPkgService
 				String pic128 = sbPic128.toString();
 				item.setPic128(fileRepository.saveImage(pkgName, pic128, entries.get(pic128)));
 			} catch (IOException | NullPointerException e) {
-				item.setPic128(fileRepository.getDefaultPicture128Path(pkgName));
+				item.setPic128(fileRepository.getDefaultPicture128Path());
 			}
 			
 			try {
 				String pic512 = sbPic512.toString();
 				item.setPic512(fileRepository.saveImage(pkgName, pic512, entries.get(pic512)));
 			} catch (IOException | NullPointerException e) {
-				item.setPic512(fileRepository.getDefaultPicture512Path(pkgName));
+				item.setPic512(fileRepository.getDefaultPicture512Path());
 			}
 			
 		} catch (IOException e) {

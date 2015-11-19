@@ -40,16 +40,6 @@
           <artifactId>h2</artifactId>
           <version>1.4.190</version>
       </dependency>
-      <!--dependency>
-          <groupId>javax.persistence</groupId>
-          <artifactId>persistence-api</artifactId>
-          <version>1.0.2</version>
-      </dependency-->
-      <!--dependency>
-          <groupId>org.hibernate</groupId>
-          <artifactId>hibernate-annotations</artifactId>
-          <version>3.5.6-Final</version>
-      </dependency-->
       <dependency>
           <groupId>org.hibernate</groupId>
           <artifactId>hibernate-entitymanager</artifactId>
@@ -111,6 +101,44 @@
                 <encoding>${project.build.sourceEncoding}</encoding>
             </configuration>
         </plugin>
+        <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>sql-maven-plugin</artifactId>
+                <version>1.5</version>
+
+                <dependencies>
+                    <dependency>
+                        <groupId>com.h2database</groupId>
+                        <artifactId>h2</artifactId>
+                        <version>1.4.190</version>
+                    </dependency>
+                </dependencies>
+
+                <configuration>
+                    <driver>org.h2.Driver</driver>
+                    <url>jdbc:h2:~/PUBLIC;AUTO_SERVER=TRUE;AUTO_SERVER_PORT=8082;SCHEMA=PUBLIC;DB_CLOSE_ON_EXIT=FALSE</url>
+                    <username>admin</username>
+                    <password>admin</password>
+                    <settingsKey>sensibleKey</settingsKey>
+                    <skip>${maven.test.skip}</skip>
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <id>create-schema</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <autocommit>true</autocommit>
+                            <srcFiles>
+                                <srcFile>src/main/resources/sql/resetDB.sql</srcFile>
+                            </srcFiles>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
     </plugins>
   </build>
   <properties>

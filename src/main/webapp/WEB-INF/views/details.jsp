@@ -20,7 +20,7 @@
             <p>Most popular</p>
             <div style="min-height: 128px">
                 <c:forEach var="item" items="${popularApps}">
-                    <img src="${item.pic128}" height="128" width="128" style="margin-left: 10px">
+                    <a href="${pageContext.request.contextPath}/details.htm?app=${item.id}"><img src="${item.pic128}" height="128" width="128" style="margin-left: 10px"></a>
                 </c:forEach>
             </div>
         </div>
