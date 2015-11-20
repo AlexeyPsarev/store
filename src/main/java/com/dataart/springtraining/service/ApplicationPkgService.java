@@ -6,36 +6,22 @@ import com.dataart.springtraining.domain.ApplicationPkg;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Base64;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-import javax.servlet.ServletContext;
-import javax.sql.rowset.serial.SerialBlob;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
 @Service
 public class ApplicationPkgService
@@ -45,6 +31,16 @@ public class ApplicationPkgService
 	
 	@Autowired
 	private FileRepository fileRepository;
+	
+	private static final String NAME = "name:";
+	private static final String PACKAGE = "package:";
+	private static final String PIC128 = "picture_128:";
+	private static final String PIC512 = "picture_512:";
+	
+	private static final String TIMEZONE = "GMT+3";
+	private static final int BUFFER_SIZE = 512;
+	private static final int POPULAR_APP_COUNT = 5;
+	private static final int PAGE_SIZE = 5;
 	
 	public enum Status
 	{
@@ -77,6 +73,8 @@ public class ApplicationPkgService
 	
 	public Status processZipFile(MultipartFile pkg, ApplicationPkg item, String appName, String category, String description, Integer author)
 	{
+		if (!pkg.getOriginalFilename().endsWith(".zip"))
+			return Status.PARSING_ERR;
 		try (ZipInputStream archive = new ZipInputStream(pkg.getInputStream()))
 		{
 			Map<String, byte[]> entries = new HashMap<>();
@@ -187,20 +185,21 @@ public class ApplicationPkgService
 		return Status.OK;
 	}
 	
+	public boolean fileExists(ApplicationPkg pkg)
+	{
+		return fileRepository.fileExists(pkg.getPkgName());
+	}
+	
 	public long getFileSize(ApplicationPkg pkg)
 	{
 		return fileRepository.getFileSize(pkg.getPkgName());
 	}
 	
-	public int download(ApplicationPkg pkg, OutputStream out) throws FileNotFoundException, IOException
+	public void download(ApplicationPkg pkg, OutputStream out) throws IOException
 	{
-		// pkg = findById(id);
-		// syncronized ?
-		// ToDo: check operator++
 		pkg.setDownloads(pkg.getDownloads() + 1);
 		appRepository.save(pkg);
-		int size = fileRepository.download(pkg.getPkgName(), out);
-		return size;
+		fileRepository.download(pkg.getPkgName(), out);
 	}
 	
 	private Status processBinaryFile(ZipInputStream input, String entryName, Map<String, byte[]> entries)
@@ -224,15 +223,4 @@ public class ApplicationPkgService
 	{
 		return (appRepository.findByPkgName(name) != null);
 	}
-	
-	private static final String NAME = "name:";
-	private static final String PACKAGE = "package:";
-	private static final String PIC128 = "picture_128:";
-	private static final String PIC512 = "picture_512:";
-	
-	private static final String TIMEZONE = "GMT+3";
-	private static final int BUFFER_SIZE = 512;
-	private static final int POPULAR_APP_COUNT = 5;
-	private static final int PAGE_SIZE = 5;
 }
-

@@ -15,7 +15,6 @@
             <input type="hidden" name="page" value="1">
             <button class="btn-link">Home</button>
         </form>
-        <!-- common -->
         <div>
             <p>Most popular</p>
             <div style="min-height: 128px">
@@ -29,13 +28,13 @@
             <img src="${app.pic512}" height="512" width="512" style="margin-left: 10px; margin-right: 50px; float: left">
             <div class="container" style="min-height: 512px">
                 <div style="min-height: 460px">
-                    <p><b>${app.appName}</b></p>
+                    <p><b><c:out value="${app.appName}"/></b></p>
                     <br>
                     <p><b>Description:</b></p>
                     <p style="white-space: pre-wrap"><c:out value="${app.description}"/></p>
                     <br>
                     <p><b>Author:</b></p>
-                    <p>${author.fullname}</p>
+                    <p><c:out value="${author.fullname}"/></p>
                 </div>
                 <form action="download.htm" method="GET">
                     <input type="hidden" name="app" value="${app.id}">

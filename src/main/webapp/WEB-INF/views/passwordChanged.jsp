@@ -6,6 +6,8 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="js/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
         <link href="js/bootstrap-3.3.5-dist/css/bootstrap.min.css" rel="stylesheet">
+        <title>Password Changed</title>
+        
         <style>
             .row {
                 margin-left: 0px;
@@ -13,14 +15,13 @@
                 margin-top: 5px;
             }
         </style>
-        <title>Password Changed</title>
     </head>
     <body>
         <div class="row">
             <div class="col-md-4"></div>
             <div class="col-md-4 text-center">
                 <div class="alert alert-success text-center">
-                    Password has been changed
+                    Your password has been changed
                 </div>
                 <form action="home.htm" method="GET">
                     <button class="btn btn-primary" style="width: 30%">OK</button>

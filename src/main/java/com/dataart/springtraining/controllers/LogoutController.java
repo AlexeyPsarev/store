@@ -11,7 +11,7 @@ import org.springframework.web.servlet.mvc.Controller;
 public class LogoutController implements Controller
 {
 	@Override
-	@RequestMapping(value = "logout.htm", method = RequestMethod.GET)
+	@RequestMapping(value = "/logout.htm", method = RequestMethod.GET)
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
 	{
 		request.getSession(false).invalidate();

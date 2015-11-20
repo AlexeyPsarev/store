@@ -7,7 +7,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="js/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
         <link href="js/bootstrap-3.3.5-dist/css/bootstrap.min.css" rel="stylesheet">
-        <title>Store</title>
+        <title>Application Store</title>
         
         <c:choose>
             <c:when test="${empty category}">
@@ -35,7 +35,6 @@
         </style>
     </head>
     <body>
-        <!-- common -->
         <div>
             <p>Most popular</p>
             <div style="min-height: 128px">

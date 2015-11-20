@@ -75,8 +75,4 @@ public class User
 	
 	@Column(name = "full_name")
 	private String fullname;
-		
-	//@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
-    //@SequenceGenerator(name = "id_gen", sequenceName = "id_seq", initialValue = 1, allocationSize = 1)
-	
 }

@@ -1,5 +1,6 @@
 package com.dataart.springtraining.controllers;
 
+import com.dataart.springtraining.auxiliary.HeaderSetter;
 import com.dataart.springtraining.domain.ApplicationPkg;
 import com.dataart.springtraining.service.ApplicationPkgService;
 import com.dataart.springtraining.service.UserService;
@@ -22,23 +23,25 @@ public class DetailsController implements Controller
 	@Resource
 	private UserService userService;
 
+	private static final String POPULAR_KEY = "popularApps";
+	private static final String AUTHOR_KEY = "author";
+	private static final String APPLICATION_ID_KEY = "app";
+	private static final String APPLICATION_KEY = "app";
+		
 	@Override
 	@RequestMapping(value = "/details.htm", method = RequestMethod.GET)
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
 	{
 		if (request.getSession(false).getAttribute("userId") == null)
 			return new ModelAndView("redirect:/");
-		response.setHeader("pragma", "no-cache");
-		response.setHeader("Cache-control", "no-cache, no-store, must-revalidate");
-		response.setHeader("Expires", "0");
+		HeaderSetter.setHeaders(response);
 		
-		Integer id = Integer.parseInt(request.getParameter("app"));
+		Integer id = Integer.parseInt(request.getParameter(APPLICATION_ID_KEY));
 		Map<String, Object> model = new HashMap<>();
-		model.put("popularApps", appService.findMostPopular().iterator());
+		model.put(POPULAR_KEY, appService.findMostPopular().iterator());
 		ApplicationPkg pkg = appService.findById(id);
-		model.put("app", pkg);
-		model.put("author", userService.find(pkg.getAuthor()));
+		model.put(APPLICATION_KEY, pkg);
+		model.put(AUTHOR_KEY, userService.find(pkg.getAuthor()));
 		return new ModelAndView("details", model);
 	}
-	
 }

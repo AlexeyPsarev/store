@@ -2,21 +2,14 @@ package com.dataart.springtraining.dao;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Properties;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import org.apache.commons.io.FilenameUtils;
@@ -24,8 +17,6 @@ import org.h2.store.fs.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
-import sun.nio.ch.FileChannelImpl;
 
 @Repository
 public class FileRepository
@@ -38,6 +29,8 @@ public class FileRepository
 	private ResourceBundle bundle;
 	private String osImgDir;
 	private String osPkgDir;
+	private String realPkgDirPath;
+	private String realImgDirPath;
 	
 	private static final boolean IS_WINDOWS = System.getProperty("os.name").startsWith("Windows");
 	private static final String DEFAULT_IMG_128 = "default128.png";
@@ -45,14 +38,16 @@ public class FileRepository
 	private static final int BUFFER_SIZE = 512;
 	
 	@PostConstruct
-	public void createDir()
+	public void createDirs()
 	{
-		realAppPath = context.getRealPath("");
 		bundle = ResourceBundle.getBundle("directories");
+		realAppPath = context.getRealPath("");
 		osImgDir = IS_WINDOWS ? bundle.getString("IMG_DIR").replace("/", "\\") : bundle.getString("IMG_DIR");
 		osPkgDir = IS_WINDOWS ? bundle.getString("PKG_DIR").replace("/", "\\") : bundle.getString("PKG_DIR");
+		realPkgDirPath = realAppPath + osPkgDir + File.separator;
+		realImgDirPath = realAppPath + osImgDir + File.separator;
 		commonContextPath = context.getContextPath() + bundle.getString("IMG_DIR") + "/";
-		
+				
 		File f = new File(realAppPath + osPkgDir);
 		f.mkdirs();
 		f = new File(realAppPath + osImgDir);
@@ -64,8 +59,7 @@ public class FileRepository
 	public String saveImage(String pkgName, String baseName, byte[] data) throws IOException
 	{
 		String dirName = FilenameUtils.removeExtension(pkgName);
-		String relDirPath = osImgDir + File.separator + dirName;
-		String absDirPath = realAppPath + relDirPath;
+		String absDirPath = realImgDirPath + dirName;
 		Files.createDirectories(Paths.get(absDirPath));
 		try (FileOutputStream f = new FileOutputStream(absDirPath + File.separator + baseName)) {
 			f.write(data);
@@ -75,8 +69,7 @@ public class FileRepository
 	
 	public void saveMultipartFile(MultipartFile file) throws IOException
 	{
-		String filename = new StringBuilder(realAppPath).append(osPkgDir).append(File.separator).
-			append(file.getOriginalFilename()).toString();
+		String filename = realPkgDirPath + file.getOriginalFilename();
 		file.transferTo(new File(filename));
 	}
 	
@@ -90,36 +83,35 @@ public class FileRepository
 		return commonContextPath + DEFAULT_IMG_512;
 	}
 	
-	public int download(String pkgName, OutputStream out) throws FileNotFoundException, IOException
+	public void download(String pkgName, OutputStream out) throws IOException
 	{
-		String path = realAppPath + osPkgDir + File.separator + pkgName;
-		int fileSize = 0;
+		String path = realPkgDirPath + pkgName;
 		try (InputStream in = new FileInputStream(path)) {
 			byte[] buffer = new byte[BUFFER_SIZE];
 			int len;
 			while ((len = in.read(buffer)) != -1)
-			{
 				out.write(buffer, 0, len);
-				fileSize += len;
-			}
 		}
-		return fileSize;
+	}
+	
+	public boolean fileExists(String name)
+	{
+		return FileUtils.exists(realPkgDirPath + name);
 	}
 	
 	public long getFileSize(String name)
 	{
-		return FileUtils.size(realAppPath + osPkgDir + File.separator + name);
+		return FileUtils.size(realPkgDirPath + name);
 	}
 	
 	private void setDefaultImage(String filename)
 	{
-		File out = new File(realAppPath + osImgDir + File.separator + filename);
+		File out = new File(realImgDirPath + filename);
 		try {
 			out.createNewFile();
-			try (FileInputStream is  = (FileInputStream)context.getResourceAsStream(
-					"/WEB-INF/classes" + bundle.getString("IMG_DIR") + File.separator + filename);
+			try (FileInputStream is  = (FileInputStream)context.getResourceAsStream("/WEB-INF/classes/images/" + filename);
 				FileChannel source = is.getChannel();
-				FileChannel dest = new FileOutputStream(out).getChannel();)
+				FileChannel dest = new FileOutputStream(out).getChannel())
 			{
 				dest.transferFrom(source, 0, source.size());
 			}

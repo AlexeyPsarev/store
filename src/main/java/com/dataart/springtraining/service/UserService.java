@@ -4,7 +4,6 @@ import com.dataart.springtraining.dao.UserRepository;
 import com.dataart.springtraining.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service

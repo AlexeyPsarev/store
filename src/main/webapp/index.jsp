@@ -1,5 +1,4 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
 <!DOCTYPE html>
 
 <html>
@@ -16,7 +15,7 @@
                 margin-right: 0px;
             }
         </style>
-        <title></title>
+        <title>Application Store</title>
     </head>
     <body>
         <div class="row" style="height: 100%">

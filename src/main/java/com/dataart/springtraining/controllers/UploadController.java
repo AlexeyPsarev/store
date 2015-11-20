@@ -1,39 +1,18 @@
 package com.dataart.springtraining.controllers;
 
+import com.dataart.springtraining.auxiliary.HeaderSetter;
 import com.dataart.springtraining.domain.ApplicationPkg;
 import com.dataart.springtraining.service.ApplicationPkgService;
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 import javax.annotation.Resource;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.sql.rowset.serial.SerialBlob;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -42,35 +21,42 @@ public class UploadController
 {
 	@Resource
 	private ApplicationPkgService service;
+		
+	private static final String APP_NAME_KEY = "appName";
+	private static final String PACKAGE_KEY = "pkg";
+	private static final String CATEGORY_KEY = "category";
+	private static final String DESCR_KEY = "description";
 	
-	@RequestMapping(value = "upload.htm", method = RequestMethod.GET)
+	private static final String NAME_ERR_KEY = "appNameErr";
+	private static final String FILE_ERR_KEY = "appFileErr";
+	
+	private static final String EMPTY_NAME = "Application name is required";
+	private static final String EMPTY_FILE = "Application file is required";
+	
+	@RequestMapping(value = "/upload.htm", method = RequestMethod.GET)
 	public ModelAndView getUploadPage(HttpServletRequest request, HttpServletResponse response)
 	{
 		if (request.getSession(false).getAttribute("userId") == null)
 			return new ModelAndView("redirect:/");
-		response.setHeader("pragma", "no-cache");
-		response.setHeader("Cache-control", "no-cache, no-store, must-revalidate");
-		response.setHeader("Expires", "0"); 
+		HeaderSetter.setHeaders(response);
 		return new ModelAndView("upload");
 	}
 	
-	@RequestMapping(value = "doUpload.htm", method = RequestMethod.POST)
+	@RequestMapping(value = "/doUpload.htm", method = RequestMethod.POST)
 	public ModelAndView handleFileUpload(
-		@RequestParam("appName") String appName,
-		@RequestParam("pkg") MultipartFile pkg,
-		@RequestParam("category") String category,
-		@RequestParam("description") String description,
+		@RequestParam(APP_NAME_KEY) String appName,
+		@RequestParam(PACKAGE_KEY) MultipartFile pkg,
+		@RequestParam(CATEGORY_KEY) String category,
+		@RequestParam(DESCR_KEY) String description,
 		HttpSession session,
 		HttpServletResponse response
-	) throws IOException, ServletException
+	) throws IOException
 	{
-		if (session.getAttribute("userId") == null)
-			return new ModelAndView("redirect:/");
-		response.setHeader("pragma", "no-cache");
-		response.setHeader("Cache-control", "no-cache, no-store, must-revalidate");
-		response.setHeader("Expires", "0"); 
-		
 		Integer author = (Integer)session.getAttribute("userId");
+		if (author == null)
+			return new ModelAndView("redirect:/");
+		HeaderSetter.setHeaders(response);
+		
 		Map<String, Object> model = new HashMap<>();
 		if (appName.isEmpty())
 			model.put(NAME_ERR_KEY, EMPTY_NAME);
@@ -79,6 +65,7 @@ public class UploadController
 		if (!model.isEmpty())
 		{
 			model.put(APP_NAME_KEY, appName);
+			model.put(DESCR_KEY, description);
 			return new ModelAndView("upload", model);
 		}
 		
@@ -87,14 +74,6 @@ public class UploadController
 		if (st != ApplicationPkgService.Status.OK)
 			return new ModelAndView("upload", FILE_ERR_KEY, st.getMessage());
 		service.upload(pkg, item);
-		
 		return new ModelAndView("uploadDone");
 	}
-	
-	private static final String NAME_ERR_KEY = "appNameErr";
-	private static final String FILE_ERR_KEY = "appFileErr";
-	private static final String APP_NAME_KEY = "appName";
-	
-	private static final String EMPTY_NAME = "Application name is required";
-	private static final String EMPTY_FILE = "Application file is required";
 }

@@ -59,7 +59,7 @@
             <div class="row">
                 <label class="col-md-2 text-right">Description</label>
                 <div class="col-md-4 text-left">
-                    <textarea class="form-control" name="description" rows="10" style="width: 100%"></textarea>
+                    <textarea class="form-control" name="description" rows="10" style="width: 100%">${description}</textarea>
                 </div>
             </div>
             <div class="row">
